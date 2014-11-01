@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-06-20 12:57:33
+<?php /* Smarty version Smarty-3.1.13, created on 2014-07-10 23:00:29
          compiled from "/home/zeyu/Workspace/blog/views/footer.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:2065209234539174115993b5-02837215%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'a427128bb4af3110aebf9feb887df8d043ebb728' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/footer.tpl',
-      1 => 1403240249,
+      1 => 1405004317,
       2 => 'file',
     ),
   ),
@@ -19,17 +19,20 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'unifunc' => 'content_5391741159d502_85656063',
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_5391741159d502_85656063')) {function content_5391741159d502_85656063($_smarty_tpl) {?><br />
+<?php if ($_valid && !is_callable('content_5391741159d502_85656063')) {function content_5391741159d502_85656063($_smarty_tpl) {?><!--
 <br />
 <br />
 <br />
 <br />
 <br />
+<br />
+-->
 <br />
 <br />
 <br />
 <br />
 <script src="../resource/zeyu_blog.js" type="text/javascript" charset="utf-8"></script>
+<!--
 <footer class="bs-footer" style="position:absolute;bottom:0px;text-align:center;width:100%" role="contentinfo">
 <div class="container">
 	<p>龙潭斋版权归 <a href="http://zeyu.ubuntu.pro/html/">龙泉居士</a> 所有</p>
@@ -39,6 +42,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 	</ul>
 </div>
 </footer>
+-->
 	</body>
 </html>
 <?php }} ?>

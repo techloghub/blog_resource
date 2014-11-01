@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-06-18 13:25:00
+<?php /* Smarty version Smarty-3.1.13, created on 2014-11-01 23:10:38
          compiled from "/home/zeyu/Workspace/blog/views/article.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:35399533153918712e09c98-27046165%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '5b2f1d0b9b2cb0bc66be59ff75e47f112e6489cd' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/article.tpl',
-      1 => 1403069100,
+      1 => 1414852424,
       2 => 'file',
     ),
   ),
@@ -64,10 +64,10 @@ p
 			<?php if ($_smarty_tpl->tpl_vars['index']->value!=''){?>
 			<script src="../resource/stickUp-master/stickUp.min.js"></script>
 			<style>
-				.isStuck
-				{
-					width:56%;
-				}
+			.isStuck
+			{
+				width:57%;
+			}
 			</style>
 			<div class="navbar-wrapper">
 				<div class="col-md-3">
@@ -136,6 +136,18 @@ $_smarty_tpl->tpl_vars['tag']->_loop = true;
 		</div>
 	</div>
 </div>
+
+<!--
+<?php if ($_smarty_tpl->tpl_vars['title']->value=="测试页面"){?>
+<script language="JavaScript">
+function myrefresh()
+{
+	window.location.reload();
+}
+setTimeout('myrefresh()',5000); //指定1秒刷新一次
+</script>
+<?php }?>
+-->
 
 <?php echo $_smarty_tpl->getSubTemplate ('footer.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
