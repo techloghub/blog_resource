@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-06-28 02:22:17
+<?php /* Smarty version Smarty-3.1.13, created on 2014-11-17 13:39:48
          compiled from "/home/zeyu/Workspace/blog/views/index.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:111250161753917411356d34-75081913%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'ffeb080268c47b3dc9dcb26eb6105df0529a9235' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/index.tpl',
-      1 => 1403893142,
+      1 => 1416202787,
       2 => 'file',
     ),
   ),
@@ -28,9 +28,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 	<br />
 	<h1>龍潭齋</h1>
 	<br />
-	<p class="lead">這個世上只有兩樣東西永遠都不會衰老，一個是青春，一個是對知識的渴求</p><p> ---- 熱愛生活，熱愛編碼，為了夢想奔跑的程序員</p>
+	<p style='font-family:"Hiragino Sans GB", "Microsoft YaHei","WenQuanYi Micro Hei"' class="lead">這個世上只有兩樣東西永遠都不會衰老，一個是青春，一個是對知識的渴求</p><p style='font-family:"Hiragino Sans GB", "Microsoft YaHei","WenQuanYi Micro Hei"'> ---- 熱愛生活，熱愛編碼，為了夢想奔跑的程序員</p>
 	<br />
-	<p><a class="btn btn-lg btn-primary" href="search.php" role="button">日誌檢索</a></p>
+	<p><a class="btn btn-lg btn-primary" href="search.php" role="button" style='font-family:"Hiragino Sans GB", "Microsoft YaHei","WenQuanYi Micro Hei"'>日誌檢索</a></p>
 </div>
 <br />
 <br />

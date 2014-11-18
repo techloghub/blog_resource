@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-11-01 23:10:38
+<?php /* Smarty version Smarty-3.1.13, created on 2014-11-12 15:08:49
          compiled from "/home/zeyu/Workspace/blog/views/article.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:35399533153918712e09c98-27046165%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '5b2f1d0b9b2cb0bc66be59ff75e47f112e6489cd' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/article.tpl',
-      1 => 1414852424,
+      1 => 1415776113,
       2 => 'file',
     ),
   ),
@@ -44,7 +44,7 @@ p
 <div class="bs-header" id="content" style="FILTER: progid:DXImageTransform.Microsoft.Gradient (GradientType=1, StartColorStr=#d9e45d EndColorStr=darkolivegreen .opacity{ opacity:0.3; filter: alpha(opacity=30); background-color:#000; }" >
 	<div class="header container">
 		<br />
-		<h1><?php echo $_smarty_tpl->tpl_vars['title']->value;?>
+		<h1 style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif'><?php echo $_smarty_tpl->tpl_vars['title']->value;?>
 </h1>
 		<p style="text-indent:0em;"><?php echo $_smarty_tpl->tpl_vars['title_desc']->value;?>
 </p>
