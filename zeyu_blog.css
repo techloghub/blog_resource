@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 .stdtable { width: 100%; border: 1px solid #D8D8D8; }
+=======
+.stdtable {
+    width: 100%;
+}
+>>>>>>> origin/master
 .stdtable .con0 { background: #fff; }
 .stdtable .con1 { background: #fcfcfc; }
 .stdtable th, .stdtable td { line-height: 21px; vertical-align: middle; color: #333;}
@@ -50,4 +56,9 @@
 }
 .stdtable tbody tr:hover td{
     background-color:#fff;
+}
+.stdtable td{
+    word-wrap:break-word;
+    word-break:break-all;
+}
 }
