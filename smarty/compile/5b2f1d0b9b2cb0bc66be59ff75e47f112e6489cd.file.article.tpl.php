@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-11-12 15:08:49
+<?php /* Smarty version Smarty-3.1.13, created on 2014-11-19 13:29:59
          compiled from "/home/zeyu/Workspace/blog/views/article.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:35399533153918712e09c98-27046165%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '5b2f1d0b9b2cb0bc66be59ff75e47f112e6489cd' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/article.tpl',
-      1 => 1415776113,
+      1 => 1416374928,
       2 => 'file',
     ),
   ),
@@ -35,11 +35,11 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <?php if ($_valid && !is_callable('content_53918712ead5a9_22200187')) {function content_53918712ead5a9_22200187($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate ('header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
 <style>
-p
-{
-	text-indent:2em;
-	word-wrap:break-word; 
-}
+	p
+	{
+		text-indent:2em;
+		word-wrap:break-word;
+	}
 </style>
 <div class="bs-header" id="content" style="FILTER: progid:DXImageTransform.Microsoft.Gradient (GradientType=1, StartColorStr=#d9e45d EndColorStr=darkolivegreen .opacity{ opacity:0.3; filter: alpha(opacity=30); background-color:#000; }" >
 	<div class="header container">
@@ -52,11 +52,9 @@ p
 </p>
 	</div>
 </div>
-
 <br/>
 <br/>
 <br/>
-
 <div class="container_wrapper">
 	<div class="container bs-docs-container">
 		<?php if ($_smarty_tpl->tpl_vars['contents']->value!=''){?>
@@ -64,10 +62,10 @@ p
 			<?php if ($_smarty_tpl->tpl_vars['index']->value!=''){?>
 			<script src="../resource/stickUp-master/stickUp.min.js"></script>
 			<style>
-			.isStuck
-			{
-				width:57%;
-			}
+				.isStuck
+				{
+					width:57%;
+				}
 			</style>
 			<div class="navbar-wrapper">
 				<div class="col-md-3">
@@ -136,19 +134,17 @@ $_smarty_tpl->tpl_vars['tag']->_loop = true;
 		</div>
 	</div>
 </div>
-
 <!--
 <?php if ($_smarty_tpl->tpl_vars['title']->value=="测试页面"){?>
 <script language="JavaScript">
-function myrefresh()
-{
-	window.location.reload();
-}
-setTimeout('myrefresh()',5000); //指定1秒刷新一次
+	function myrefresh()
+	{
+		window.location.reload();
+	}
+	setTimeout('myrefresh()',5000); //指定1秒刷新一次
 </script>
 <?php }?>
 -->
-
 <?php echo $_smarty_tpl->getSubTemplate ('footer.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
 <?php }} ?>

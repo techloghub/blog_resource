@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-11-17 13:42:39
+<?php /* Smarty version Smarty-3.1.13, created on 2014-11-19 13:29:56
          compiled from "/home/zeyu/Workspace/blog/views/debin.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1707877605391870ddd5724-68961550%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1add61b48db023e3cc16532f5dd49a81483f57e8' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/debin.tpl',
-      1 => 1416202957,
+      1 => 1416374897,
       2 => 'file',
     ),
   ),
@@ -184,7 +184,7 @@ $_smarty_tpl->tpl_vars['article_info']->_loop = true;
 					<a href="article.php?id=<?php echo $_smarty_tpl->tpl_vars['article_info']->value['article_id'];?>
 " class="a-incontent a-title cs-contentblock-hoverlink" target=_blank>
 						<?php }else{ ?>
-						<div class="a-incontent a-title cs-contentblock-hoverlink">
+						<div class="a-incontent a-title cs-contentblock-hoverlink" style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif' >
 						<?php }?>
 						<?php echo $_smarty_tpl->tpl_vars['article_info']->value['title'];?>
 
@@ -330,6 +330,8 @@ $_smarty_tpl->tpl_vars['pagenum']->_loop = true;
 	<input type="hidden" id='tags' name='tags' value="<?php echo $_smarty_tpl->tpl_vars['query_info']->value['tags'];?>
 "/>
 	<input type="hidden" id='category' name='category' value="<?php echo $_smarty_tpl->tpl_vars['query_info']->value['category'];?>
+"/>
+	<input type="hidden" id='opt_type' name='opt_type' value="<?php echo $_smarty_tpl->tpl_vars['query_info']->value['opt_type'];?>
 "/>
 </form>
 <script>

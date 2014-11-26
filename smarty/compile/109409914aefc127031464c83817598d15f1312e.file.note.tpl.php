@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-11-01 23:18:30
+<?php /* Smarty version Smarty-3.1.13, created on 2014-11-21 21:09:01
          compiled from "/home/zeyu/Workspace/blog/views/note.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:945523387539187186c0958-39626201%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '109409914aefc127031464c83817598d15f1312e' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/note.tpl',
-      1 => 1414855106,
+      1 => 1416575341,
       2 => 'file',
     ),
   ),
@@ -37,7 +37,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_5391871877f6f1_71059050')) {function content_5391871877f6f1_71059050($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate ('header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
-<script src="../resource/bootstrap/js/jquery.js"></script>
 <script language="javascript">
 function get_earnings()
 {
@@ -67,7 +66,6 @@ function drw_earnings()
 "/>
 <div class="container projects">
 	<div class="row">
-	
 		<?php if ($_smarty_tpl->tpl_vars['category_id']->value==1){?>
 			<canvas id="myChart" width="980px" height="300px" class="span12"></canvas>
 			<div class='span12'><br /></div>
