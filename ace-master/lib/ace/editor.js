@@ -48,6 +48,7 @@ var EventEmitter = require("./lib/event_emitter").EventEmitter;
 var CommandManager = require("./commands/command_manager").CommandManager;
 var defaultCommands = require("./commands/default_commands").commands;
 var config = require("./config");
+var TokenIterator = require("./token_iterator").TokenIterator;
 
 /**
  * The main entry point into the Ace functionality.
@@ -93,7 +94,8 @@ var Editor = function(renderer, session) {
     
     this._$emitInputEvent = lang.delayedCall(function() {
         this._signal("input", {});
-        this.session.bgTokenizer && this.session.bgTokenizer.scheduleStart();
+        if (this.session && this.session.bgTokenizer)
+            this.session.bgTokenizer.scheduleStart();
     }.bind(this));
     
     this.on("change", function(_, _self) {
@@ -113,30 +115,8 @@ var Editor = function(renderer, session) {
         function last(a) {return a[a.length - 1]}
 
         this.selections = [];
-        this.commands.on("exec", function(e) {
-            this.startOperation(e);
-
-            var command = e.command;
-            if (command.aceCommandGroup == "fileJump") {
-                var prev = this.prevOp;
-                if (!prev || prev.command.aceCommandGroup != "fileJump") {
-                    this.lastFileJumpPos = last(this.selections);
-                }
-            } else {
-                this.lastFileJumpPos = null;
-            }
-        }.bind(this), true);
-
-        this.commands.on("afterExec", function(e) {
-            var command = e.command;
-
-            if (command.aceCommandGroup == "fileJump") {
-                if (this.lastFileJumpPos && !this.curOp.selectionChanged) {
-                    this.selection.fromJSON(this.lastFileJumpPos);
-                }
-            }
-            this.endOperation(e);
-        }.bind(this), true);
+        this.commands.on("exec", this.startOperation.bind(this), true);
+        this.commands.on("afterExec", this.endOperation.bind(this), true);
 
         this.$opResetTimer = lang.delayedCall(this.endOperation.bind(this));
 
@@ -171,18 +151,16 @@ var Editor = function(renderer, session) {
             scrollTop: this.renderer.scrollTop
         };
         
-        var command = this.curOp.command;
-        if (command && command.scrollIntoView)
-            this.$blockScrolling++;
-
-        this.selections.push(this.selection.toJSON());
+        // this.selections.push(this.selection.toJSON());
     };
 
-    this.endOperation = function() {
+    this.endOperation = function(e) {
         if (this.curOp) {
+            if (e && e.returnValue === false)
+                return this.curOp = null;
+                
             var command = this.curOp.command;
             if (command && command.scrollIntoView) {
-                this.$blockScrolling--;
                 switch (command.scrollIntoView) {
                     case "center":
                         this.renderer.scrollCursorIntoView(null, 0.5);
@@ -210,13 +188,14 @@ var Editor = function(renderer, session) {
         }
     };
 
+    // TODO use property on commands instead of this
+    this.$mergeableCommands = ["backspace", "del", "insertstring"];
     this.$historyTracker = function(e) {
         if (!this.$mergeUndoDeltas)
             return;
 
-
         var prev = this.prevOp;
-        var mergeableCommands = ["backspace", "del", "insertstring"];
+        var mergeableCommands = this.$mergeableCommands;
         // previous command was the same
         var shouldMerge = prev.command && (e.command.name == prev.command.name);
         if (e.command.name == "insertstring") {
@@ -252,19 +231,19 @@ var Editor = function(renderer, session) {
      * @param {String} keyboardHandler The new key handler
      *
      **/
-    this.setKeyboardHandler = function(keyboardHandler) {
-        if (!keyboardHandler) {
-            this.keyBinding.setKeyboardHandler(null);
-        } else if (typeof keyboardHandler === "string") {
+    this.setKeyboardHandler = function(keyboardHandler, cb) {
+        if (keyboardHandler && typeof keyboardHandler === "string") {
             this.$keybindingId = keyboardHandler;
             var _self = this;
             config.loadModule(["keybinding", keyboardHandler], function(module) {
                 if (_self.$keybindingId == keyboardHandler)
                     _self.keyBinding.setKeyboardHandler(module && module.handler);
+                cb && cb();
             });
         } else {
             this.$keybindingId = null;
             this.keyBinding.setKeyboardHandler(keyboardHandler);
+            cb && cb();
         }
     };
 
@@ -382,6 +361,9 @@ var Editor = function(renderer, session) {
             this.onChangeAnnotation();
             this.session.getUseWrapMode() && this.renderer.adjustWrapLimit();
             this.renderer.updateFull();
+        } else {
+            this.selection = null;
+            this.renderer.setSession(session);
         }
 
         this._signal("changeSession", {
@@ -523,15 +505,99 @@ var Editor = function(renderer, session) {
         this.$highlightPending = true;
         setTimeout(function() {
             self.$highlightPending = false;
-
-            var pos = self.session.findMatchingBracket(self.getCursorPosition());
+            var session = self.session;
+            if (!session || !session.bgTokenizer) return;
+            var pos = session.findMatchingBracket(self.getCursorPosition());
             if (pos) {
-                var range = new Range(pos.row, pos.column, pos.row, pos.column+1);
-            } else if (self.session.$mode.getMatching) {
-                var range = self.session.$mode.getMatching(self.session);
+                var range = new Range(pos.row, pos.column, pos.row, pos.column + 1);
+            } else if (session.$mode.getMatching) {
+                var range = session.$mode.getMatching(self.session);
             }
             if (range)
-                self.session.$bracketHighlight = self.session.addMarker(range, "ace_bracket", "text");
+                session.$bracketHighlight = session.addMarker(range, "ace_bracket", "text");
+        }, 50);
+    };
+
+    // todo: move to mode.getMatching
+    this.$highlightTags = function() {
+        if (this.$highlightTagPending)
+            return;
+
+        // perform highlight async to not block the browser during navigation
+        var self = this;
+        this.$highlightTagPending = true;
+        setTimeout(function() {
+            self.$highlightTagPending = false;
+            
+            var session = self.session;
+            if (!session || !session.bgTokenizer) return;
+            
+            var pos = self.getCursorPosition();
+            var iterator = new TokenIterator(self.session, pos.row, pos.column);
+            var token = iterator.getCurrentToken();
+            
+            if (!token || token.type.indexOf('tag-name') === -1) {
+                session.removeMarker(session.$tagHighlight);
+                session.$tagHighlight = null;
+                return;
+            }
+
+            var tag = token.value;
+            var depth = 0;
+            var prevToken = iterator.stepBackward();
+            
+            if (prevToken.value == '<'){
+                //find closing tag
+                do {
+                    prevToken = token;
+                    token = iterator.stepForward();
+                    
+                    if (token && token.value === tag && token.type.indexOf('tag-name') !== -1) {
+                        if (prevToken.value === '<'){
+                            depth++;
+                        } else if (prevToken.value === '</'){
+                            depth--;
+                        }
+                    }
+                    
+                } while (token && depth >= 0);
+            } else {
+                //find opening tag
+                do {
+                    token = prevToken;
+                    prevToken = iterator.stepBackward();
+                    
+                    if (token && token.value === tag && token.type.indexOf('tag-name') !== -1) {
+                        if (prevToken.value === '<') {
+                            depth++;
+                        } else if (prevToken.value === '</') {
+                            depth--;
+                        }
+                    }
+                } while (prevToken && depth <= 0);
+                
+                //select tag again
+                iterator.stepForward();
+            }
+            
+            if (!token) {
+                session.removeMarker(session.$tagHighlight);
+                session.$tagHighlight = null;
+                return;
+            }
+            
+            var row = iterator.getCurrentTokenRow();
+            var column = iterator.getCurrentTokenColumn();
+            var range = new Range(row, column, row, column+token.value.length);
+            
+            //remove range if different
+            if (session.$tagHighlight && range.compareRange(session.$backMarkers[session.$tagHighlight].range)!==0) {
+                session.removeMarker(session.$tagHighlight);
+                session.$tagHighlight = null;
+            }
+            
+            if (range && !session.$tagHighlight)
+                session.$tagHighlight = session.addMarker(range, "ace_bracket", "text");
         }, 50);
     };
 
@@ -572,13 +638,13 @@ var Editor = function(renderer, session) {
      *
      *
      **/
-    this.onFocus = function() {
+    this.onFocus = function(e) {
         if (this.$isFocused)
             return;
         this.$isFocused = true;
         this.renderer.showCursor();
         this.renderer.visualizeFocus();
-        this._emit("focus");
+        this._emit("focus", e);
     };
 
     /**
@@ -587,13 +653,13 @@ var Editor = function(renderer, session) {
      *
      *
      **/
-    this.onBlur = function() {
+    this.onBlur = function(e) {
         if (!this.$isFocused)
             return;
         this.$isFocused = false;
         this.renderer.hideCursor();
         this.renderer.visualizeBlur();
-        this._emit("blur");
+        this._emit("blur", e);
     };
 
     this.$cursorChange = function() {
@@ -617,12 +683,13 @@ var Editor = function(renderer, session) {
             lastRow = range.end.row;
         else
             lastRow = Infinity;
-        this.renderer.updateLines(range.start.row, lastRow);
+        this.renderer.updateLines(range.start.row, lastRow, this.session.$useWrapMode);
 
         this._signal("change", e);
 
         // update cursor because tab characters can influence the cursor position
         this.$cursorChange();
+        this.$updateHighlightActiveLine();
     };
 
     this.onTokenizerUpdate = function(e) {
@@ -651,6 +718,7 @@ var Editor = function(renderer, session) {
         }
 
         this.$highlightBrackets();
+        this.$highlightTags();
         this.$updateHighlightActiveLine();
         this._signal("changeSelection");
     };
@@ -820,7 +888,7 @@ var Editor = function(renderer, session) {
     /**
      * Emitted when text is pasted.
      * @event paste
-     * @param {String} text The pasted text
+     * @param {Object} an object which contains one property, `text`, that represents the text to be pasted. Editing this property will alter the text that is pasted.
      *
      *
      **/
@@ -839,9 +907,8 @@ var Editor = function(renderer, session) {
         this.insert(e.text, true);
     };
 
-
     this.execCommand = function(command, args) {
-        this.commands.exec(command, this, args);
+        return this.commands.exec(command, this, args);
     };
 
     /**
@@ -1915,33 +1982,166 @@ var Editor = function(renderer, session) {
     };
 
     /**
-     * Moves the cursor's row and column to the next matching bracket.
+     * Moves the cursor's row and column to the next matching bracket or HTML tag.
      *
      **/
-    this.jumpToMatching = function(select) {
+    this.jumpToMatching = function(select, expand) {
         var cursor = this.getCursorPosition();
+        var iterator = new TokenIterator(this.session, cursor.row, cursor.column);
+        var prevToken = iterator.getCurrentToken();
+        var token = prevToken || iterator.stepForward();
 
-        var range = this.session.getBracketRange(cursor);
-        if (!range) {
-            range = this.find({
-                needle: /[{}()\[\]]/g,
-                preventScroll:true,
-                start: {row: cursor.row, column: cursor.column - 1}
-            });
-            if (!range)
+        if (!token) return;
+
+        //get next closing tag or bracket
+        var matchType;
+        var found = false;
+        var depth = {};
+        var i = cursor.column - token.start;
+        var bracketType;
+        var brackets = {
+            ")": "(",
+            "(": "(",
+            "]": "[",
+            "[": "[",
+            "{": "{",
+            "}": "{"
+        };
+        
+        do {
+            if (token.value.match(/[{}()\[\]]/g)) {
+                for (; i < token.value.length && !found; i++) {
+                    if (!brackets[token.value[i]]) {
+                        continue;
+                    }
+
+                    bracketType = brackets[token.value[i]] + '.' + token.type.replace("rparen", "lparen");
+
+                    if (isNaN(depth[bracketType])) {
+                        depth[bracketType] = 0;
+                    }
+
+                    switch (token.value[i]) {
+                        case '(':
+                        case '[':
+                        case '{':
+                            depth[bracketType]++;
+                            break;
+                        case ')':
+                        case ']':
+                        case '}':
+                            depth[bracketType]--;
+
+                            if (depth[bracketType] === -1) {
+                                matchType = 'bracket';
+                                found = true;
+                            }
+                        break;
+                    }
+                }
+            }
+            else if (token && token.type.indexOf('tag-name') !== -1) {
+                if (isNaN(depth[token.value])) {
+                    depth[token.value] = 0;
+                }
+                
+                if (prevToken.value === '<') {
+                    depth[token.value]++;
+                }
+                else if (prevToken.value === '</') {
+                    depth[token.value]--;
+                }
+                
+                if (depth[token.value] === -1) {
+                    matchType = 'tag';
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                prevToken = token;
+                token = iterator.stepForward();
+                i = 0;
+            }
+        } while (token && !found);
+
+        //no match found
+        if (!matchType)
+            return;
+
+        var range, pos;
+        if (matchType === 'bracket') {
+            range = this.session.getBracketRange(cursor);
+            if (!range) {
+                range = new Range(
+                    iterator.getCurrentTokenRow(),
+                    iterator.getCurrentTokenColumn() + i - 1,
+                    iterator.getCurrentTokenRow(),
+                    iterator.getCurrentTokenColumn() + i - 1
+                );
+                pos = range.start;
+                if (expand || pos.row === cursor.row && Math.abs(pos.column - cursor.column) < 2)
+                    range = this.session.getBracketRange(pos);
+            }
+        }
+        else if (matchType === 'tag') {
+            if (token && token.type.indexOf('tag-name') !== -1) 
+                var tag = token.value;
+            else
                 return;
-            var pos = range.start;
-            if (pos.row == cursor.row && Math.abs(pos.column - cursor.column) < 2)
-                range = this.session.getBracketRange(pos);
+
+            range = new Range(
+                iterator.getCurrentTokenRow(),
+                iterator.getCurrentTokenColumn() - 2,
+                iterator.getCurrentTokenRow(),
+                iterator.getCurrentTokenColumn() - 2
+            );
+
+            //find matching tag
+            if (range.compare(cursor.row, cursor.column) === 0) {
+                found = false;
+                do {
+                    token = prevToken;
+                    prevToken = iterator.stepBackward();
+                    
+                    if (prevToken) {
+                        if (prevToken.type.indexOf('tag-close') !== -1) {
+                            range.setEnd(iterator.getCurrentTokenRow(), iterator.getCurrentTokenColumn() + 1);
+                        }
+
+                        if (token.value === tag && token.type.indexOf('tag-name') !== -1) {
+                            if (prevToken.value === '<') {
+                                depth[tag]++;
+                            }
+                            else if (prevToken.value === '</') {
+                                depth[tag]--;
+                            }
+                            
+                            if (depth[tag] === 0)
+                                found = true;
+                        }
+                    }
+                } while (prevToken && !found);
+            }
+
+            //we found it
+            if (token && token.type.indexOf('tag-name')) {
+                pos = range.start;
+                if (pos.row == cursor.row && Math.abs(pos.column - cursor.column) < 2)
+                    pos = range.end;
+            }
         }
 
         pos = range && range.cursor || pos;
         if (pos) {
             if (select) {
-                if (range && range.isEqual(this.getSelectionRange()))
+                if (range && expand) {
+                    this.selection.setRange(range);
+                } else if (range && range.isEqual(this.getSelectionRange())) {
                     this.clearSelection();
-                else
+                } else {
                     this.selection.selectTo(pos.row, pos.column);
+                }
             } else {
                 this.selection.moveTo(pos.row, pos.column);
             }
@@ -2299,6 +2499,9 @@ var Editor = function(renderer, session) {
     this.destroy = function() {
         this.renderer.destroy();
         this._signal("destroy", this);
+        if (this.session) {
+            this.session.destroy();
+        }
     };
 
     /**
@@ -2325,7 +2528,9 @@ var Editor = function(renderer, session) {
                 rect = self.renderer.container.getBoundingClientRect();
         });
         var onAfterRender = this.renderer.on("afterRender", function() {
-            if (shouldScroll && rect && self.isFocused()) {
+            if (shouldScroll && rect && (self.isFocused()
+                || self.searchBox && self.searchBox.isFocused())
+            ) {
                 var renderer = self.renderer;
                 var pos = renderer.$cursorLayer.$pixelPos;
                 var config = renderer.layerConfig;
@@ -2363,8 +2568,9 @@ var Editor = function(renderer, session) {
         var cursorLayer = this.renderer.$cursorLayer;
         if (!cursorLayer)
             return;
-        cursorLayer.setSmoothBlinking(style == "smooth");
+        cursorLayer.setSmoothBlinking(/smooth/.test(style));
         cursorLayer.isBlinking = !this.$readOnly && style != "wide";
+        dom.setCssClass(cursorLayer.element, "ace_slim-cursors", /slim/.test(style));
     };
 
 }).call(Editor.prototype);
@@ -2389,7 +2595,8 @@ config.defineOptions(Editor.prototype, "editor", {
     },
     readOnly: {
         set: function(readOnly) {
-            this.textInput.setReadOnly(readOnly); 
+            // disabled to not break vim mode!
+            // this.textInput.setReadOnly(readOnly);
             this.$resetCursorStyle(); 
         },
         initialValue: false

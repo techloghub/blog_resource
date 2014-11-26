@@ -33,6 +33,7 @@ define(function(require, exports, module) {
 var oop = require("../lib/oop");
 var dom = require("../lib/dom");
 var lang = require("../lib/lang");
+var useragent = require("../lib/useragent");
 var EventEmitter = require("../lib/event_emitter").EventEmitter;
 
 var CHAR_COUNT = 0;
@@ -54,7 +55,7 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
     
     if (!CHAR_COUNT)
         this.$testFractionalRect();
-    this.$measureNode.textContent = lang.stringRepeat("X", CHAR_COUNT);
+    this.$measureNode.innerHTML = lang.stringRepeat("X", CHAR_COUNT);
     
     this.$characterSize = {width: 0, height: 0};
     this.checkForSizeChanges();
@@ -73,7 +74,7 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
         document.documentElement.appendChild(el);
         var w = el.getBoundingClientRect().width;
         if (w > 0 && w < 1)
-            CHAR_COUNT = 1;
+            CHAR_COUNT = 50;
         else
             CHAR_COUNT = 100;
         el.parentNode.removeChild(el);
@@ -81,11 +82,16 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
     
     this.$setMeasureNodeStyles = function(style, isRoot) {
         style.width = style.height = "auto";
-        style.left = style.top = "-100px";
+        style.left = style.top = "0px";
         style.visibility = "hidden";
-        style.position = "fixed";
+        style.position = "absolute";
         style.whiteSpace = "pre";
-        style.font = "inherit";
+
+        if (useragent.isIE < 8) {
+            style["font-family"] = "inherit";
+        } else {
+            style.font = "inherit";
+        }
         style.overflow = isRoot ? "hidden" : "visible";
     };
 
@@ -121,11 +127,23 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
     };
 
     this.$measureSizes = function() {
-        var rect = this.$measureNode.getBoundingClientRect();
-        var size = {
-            height: rect.height,
-            width: rect.width / CHAR_COUNT
-        };
+        if (CHAR_COUNT === 50) {
+            var rect = null;
+            try { 
+               rect = this.$measureNode.getBoundingClientRect();
+            } catch(e) {
+               rect = {width: 0, height:0 };
+            };
+            var size = {
+                height: rect.height,
+                width: rect.width / CHAR_COUNT
+            };
+        } else {
+            var size = {
+                height: this.$measureNode.clientHeight,
+                width: this.$measureNode.clientWidth / CHAR_COUNT
+            };
+        }
         // Size and width can be null if the editor is not visible or
         // detached from the document
         if (size.width === 0 || size.height === 0)
@@ -134,7 +152,7 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
     };
 
     this.$measureCharWidth = function(ch) {
-        this.$main.textContent = lang.stringRepeat(ch, CHAR_COUNT);
+        this.$main.innerHTML = lang.stringRepeat(ch, CHAR_COUNT);
         var rect = this.$main.getBoundingClientRect();
         return rect.width / CHAR_COUNT;
     };

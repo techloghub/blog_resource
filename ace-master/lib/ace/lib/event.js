@@ -85,7 +85,7 @@ exports.preventDefault = function(e) {
 exports.getButton = function(e) {
     if (e.type == "dblclick")
         return 0;
-    if (e.type == "contextmenu" || (e.ctrlKey && useragent.isMac))
+    if (e.type == "contextmenu" || (useragent.isMac && (e.ctrlKey && !e.altKey && !e.shiftKey)))
         return 2;
 
     // DOM Event
@@ -161,7 +161,7 @@ exports.addMouseWheelListener = function(el, callback) {
 
 exports.addMultiMouseDownListener = function(el, timeouts, eventHandler, callbackName) {
     var clicks = 0;
-    var startX, startY, timer;
+    var startX, startY, timer; 
     var eventNames = {
         2: "dblclick",
         3: "tripleclick",
@@ -180,14 +180,19 @@ exports.addMultiMouseDownListener = function(el, timeouts, eventHandler, callbac
         }
         if (useragent.isIE) {
             var isNewClick = Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5;
-            if (isNewClick) {
+            if (!timer || isNewClick)
                 clicks = 1;
-            }
+            if (timer)
+                clearTimeout(timer);
+            timer = setTimeout(function() {timer = null}, timeouts[clicks - 1] || 600);
+
             if (clicks == 1) {
                 startX = e.clientX;
                 startY = e.clientY;
             }
         }
+        
+        e._clicks = clicks;
 
         eventHandler[callbackName]("mousedown", e);
 
@@ -234,7 +239,7 @@ function normalizeCommandKeys(callback, e, keyCode) {
                 return;
         }
         if (keyCode === 18 || keyCode === 17) {
-            var location = e.location || e.keyLocation;
+            var location = "location" in e ? e.location : e.keyLocation;
             if (keyCode === 17 && location === 1) {
                 ts = e.timeStamp;
             } else if (keyCode === 18 && hashId === 3 && location === 2) {
@@ -270,11 +275,20 @@ function normalizeCommandKeys(callback, e, keyCode) {
     }
     
     if (!hashId && keyCode === 13) {
-        if (e.location || e.keyLocation === 3) {
+        var location = "location" in e ? e.location : e.keyLocation;
+        if (location === 3) {
             callback(e, hashId, -keyCode);
             if (e.defaultPrevented)
                 return;
         }
+    }
+    
+    if (useragent.isChromeOS && hashId & 8) {
+        callback(e, hashId, keyCode);
+        if (e.defaultPrevented)
+            return;
+        else
+            hashId &= ~8;
     }
 
     // If there is no hashId and the keyCode is not a function key, then
