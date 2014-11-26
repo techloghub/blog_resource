@@ -53,3 +53,8 @@
 .stdtable tbody tr:hover td{
     background-color:#fff;
 }
+.stdtable td{
+    word-wrap:break-word;
+    word-break:break-all;
+}
+}
