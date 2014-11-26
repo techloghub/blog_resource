@@ -1,4 +1,4 @@
-.stdtable { width: 100%; }
+.stdtable { width: 100%; border: 1px solid #D8D8D8; }
 .stdtable .con0 { background: #fff; }
 .stdtable .con1 { background: #fcfcfc; }
 .stdtable th, .stdtable td { line-height: 21px; vertical-align: middle; color: #333;}

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-11-26 16:18:01
+<?php /* Smarty version Smarty-3.1.13, created on 2014-11-26 16:51:35
          compiled from "/home/zeyu/Workspace/blog/views/pictures.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:77208412653a2d9b9539001-41508756%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'aeaeac9f7851e7a22a0931c7ef8e5ab09b393768' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/pictures.tpl',
-      1 => 1416989876,
+      1 => 1416991895,
       2 => 'file',
     ),
   ),
@@ -103,7 +103,7 @@ $_smarty_tpl->tpl_vars['cat']->_loop = true;
 			<h3>图片总数: <?php echo $_smarty_tpl->tpl_vars['count']->value;?>
 </h3>
 			<center>
-				<table class="stdtable" border="4" style="font-weight:bold; word-wrap:break-word; overflow:normal;">
+				<table class="stdtable" style="font-weight:bold; word-wrap:break-word; overflow:normal;">
 					<caption style="background-color:#BFEFFF; font-weight:bold; font-size:24px">PICTURES</caption>
 					<tr style="background-color:#BFEFFF;">
 						<td width="7%" valign="middle" align="center" valign="middle">
