@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2014-11-21 13:26:12
+<?php /* Smarty version Smarty-3.1.13, created on 2014-11-26 16:18:01
          compiled from "/home/zeyu/Workspace/blog/views/pictures.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:77208412653a2d9b9539001-41508756%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'aeaeac9f7851e7a22a0931c7ef8e5ab09b393768' => 
     array (
       0 => '/home/zeyu/Workspace/blog/views/pictures.tpl',
-      1 => 1416547572,
+      1 => 1416989876,
       2 => 'file',
     ),
   ),
@@ -103,22 +103,22 @@ $_smarty_tpl->tpl_vars['cat']->_loop = true;
 			<h3>图片总数: <?php echo $_smarty_tpl->tpl_vars['count']->value;?>
 </h3>
 			<center>
-				<table class="table table-hover table-condensed" border="4" style="font-weight:bold; word-wrap:break-word; overflow:normal;">
+				<table class="stdtable" border="4" style="font-weight:bold; word-wrap:break-word; overflow:normal;">
 					<caption style="background-color:#BFEFFF; font-weight:bold; font-size:24px">PICTURES</caption>
 					<tr style="background-color:#BFEFFF;">
-						<td width="7%" valign="middle" align="center">
+						<td width="7%" valign="middle" align="center" valign="middle">
 							ID
 						</td>
-						<td width="15%" valign="middle" align="center">
+						<td width="15%" valign="middle" align="center" valign="middle">
 							PICTURE
 						</td>
-						<td width="10%" valign="middle" align="center">
+						<td width="10%" valign="middle" align="center" valign="middle">
 							CATEGORY
 						</td>
-						<td width="30" valign="middle" align="center">
+						<td width="30" valign="middle" align="center" valign="middle">
 							PATH
 						</td>
-						<td width="20%" valign="middle" align="center">
+						<td width="20%" valign="middle" align="center" valign="middle">
 							INSERT_TIME
 						</td>
 					</tr>
@@ -138,11 +138,11 @@ $_smarty_tpl->tpl_vars['info']->_loop = true;
 							<?php echo $_smarty_tpl->tpl_vars['info']->value['category'];?>
 
 						</td>
-						<td valign="middle" style="padding-top:50px;"align="center">
+						<td valign="middle" style="padding-top:50px;"align="center" valign="middle">
 							<?php echo $_smarty_tpl->tpl_vars['info']->value['path'];?>
 
 						</td>
-						<td valign="middle" style="padding-top:50px;"align="center">
+						<td valign="middle" style="padding-top:50px;"align="center" valign="middle">
 							<?php echo $_smarty_tpl->tpl_vars['info']->value['inserttime'];?>
 
 						</td>
