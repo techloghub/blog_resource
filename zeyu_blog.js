@@ -8,7 +8,17 @@ if (typeof(CODE_DIVS) != 'undefined')
 		editor.getSession().setMode("ace/mode/" + allId[i]['mode']);
 		editor.getSession().setUseWrapMode(80);
 		editor.setReadOnly(true);
-		document.getElementById(allId[i]['id']).style.fontSize='16px';
+		$('#'+allId[i]['id']).css('font-size', '16px');
+
+		var elem = document.getElementsByTagName('*');
+		for(var idx=0; idx<elem.length; idx++)
+		{
+			if (elem[idx].className == 'ace_line_group')
+			{
+				$('#'+allId[i]['id']).css('height', (elem[idx].scrollHeight*$('#'+allId[i]['id']).height())+'px');
+				break;
+			}
+		}
 	}
 }
 
