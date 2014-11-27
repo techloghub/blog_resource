@@ -9,16 +9,6 @@ if (typeof(CODE_DIVS) != 'undefined')
 		editor.getSession().setUseWrapMode(80);
 		editor.setReadOnly(true);
 		$('#'+allId[i]['id']).css('font-size', '16px');
-
-		var elem = document.getElementsByTagName('*');
-		for(var idx=0; idx<elem.length; idx++)
-		{
-			if (elem[idx].className == 'ace_line_group')
-			{
-				$('#'+allId[i]['id']).css('height', (elem[idx].scrollHeight*$('#'+allId[i]['id']).height())+'px');
-				break;
-			}
-		}
 	}
 	
 	var elems = document.getElementsByClassName('ace_line_group');
@@ -39,7 +29,6 @@ jQuery
 		(
 		 	function()
 			{
-				//enabling stickUp on the '.navbar-wrapper' class
 				$('.navbar-wrapper').stickUp();
 			}
 		);
