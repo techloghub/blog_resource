@@ -15,7 +15,6 @@ if (typeof(CODE_DIVS) != 'undefined')
 	var ace_height = elems[0].scrollHeight;
 	for (var i in allId)
 	{
-		console.log($('#'+allId[i]['id']).height());
 		var height = $('#'+allId[i]['id']).height() * ace_height;
 		$('#'+allId[i]['id']).css('height', height+'px');
 	}
