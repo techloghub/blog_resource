@@ -33,3 +33,42 @@ jQuery
 		);
 	}
 );
+
+var scrollFunc=function(e)
+{
+	e=e || window.event;
+	if(e.wheelDelta)
+	{
+		if(e.wheelDelta==120)
+		{
+			//向下滚动事件
+			$('#navbar').hide();
+		}
+		else
+		{
+			//向上滚动事件
+			$('#navbar').show();
+		}
+	}
+	else if(e.detail)
+	{
+		//Firefox
+		if(e.detail==-3)
+		{
+			//向上滚动事件<br>
+			$('#navbar').show();
+		}
+		else
+		{
+			//向下滚动事件<br>
+			$('#navbar').hide();
+		}
+	}
+};
+
+if(document.addEventListener)
+{
+	document.addEventListener("DOMMouseScroll" ,scrollFunc, false);
+}
+
+window.onmousewheel=document.onmousewheel=scrollFunc;
