@@ -60,6 +60,7 @@ var scrollFunc=function(e)
 			if (!$('#stuck_div').hasClass('col-md-3'))
 			{
 				$('#stuck_div').css('margin', '50px 0 0 15px');
+				$('#stuck_div div:first ul:first').css('margin-top', '30px');
 			}
 		}
 		else
