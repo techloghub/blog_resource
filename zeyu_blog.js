@@ -53,15 +53,24 @@ var scrollFunc=function(e)
 	else if(e.detail)
 	{
 		//Firefox
-		if(e.detail==-3)
+		if(e.detail < 0)
 		{
 			//向上滚动事件<br>
 			$('#navbar').show();
+			if (!$('#stuck_div').hasClass('col-md-3'))
+			{
+				$('#stuck_div').css('margin', '50px 0 0 15px');
+			}
 		}
 		else
 		{
 			//向下滚动事件<br>
 			$('#navbar').hide();
+			if (!$('#stuck_div').hasClass('col-md-3'))
+			{
+				$('#stuck_div').css('margin', '0px 0 0 15px');
+				$('#stuck_div div:first ul:first').css('margin-top', '0px');
+			}
 		}
 	}
 };
