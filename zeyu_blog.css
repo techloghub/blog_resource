@@ -18,7 +18,7 @@
 .stdtable thead th.sorting_desc, .stdtable thead td.sorting_desc  {
     background-image: url(../images/sort_desc.png); background-repeat: no-repeat; background-position: right 9px; }
 .stdtable thead th.nosort { background-image: none !important; }
-.stdtable thead td { font-weight: bold; }
+.stdtable thead td { font-weight: bold; text-align: center; }
 .stdtable thead.center td { text-align: center; }
 .stdtable tbody.center td { text-align: center; }
 .stdtable tbody tr td {
@@ -46,7 +46,7 @@
     background-color:rgba(0, 0, 0, 0.1);
 }
 .stdtable tbody tr:nth-child(even) td{
-    background-color:#f2f3f5;
+    background-color:rgba(242, 243, 245, 0.4);
 }
 .stdtable tbody tr:hover td{
     background-color:#fff;
