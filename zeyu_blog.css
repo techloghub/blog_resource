@@ -43,7 +43,7 @@
 .stdtable a.title { font-weight: bold; color: blue; }
 .stdtable a.title:hover { color: #fb9337; }
 .stdtable tbody tr:nth-child(odd) td{
-    background-color:#ddd;
+    background-color:rgba(0, 0, 0, 0.1);
 }
 .stdtable tbody tr:nth-child(even) td{
     background-color:#f2f3f5;
