@@ -41,12 +41,20 @@ var scrollFunc=function(e)
 	{
 		if(e.wheelDelta > 0)
 		{
+<<<<<<< HEAD
 			//向上滚动事件
+=======
+			//向下滚动事件
+>>>>>>> 544486bdc243b51240034759720f1d1393b2d4ce
 			$('#navbar').show();
 		}
 		else
 		{
+<<<<<<< HEAD
 			//向下滚动事件
+=======
+			//向上滚动事件
+>>>>>>> 544486bdc243b51240034759720f1d1393b2d4ce
 			$('#navbar').hide();
 		}
 	}
