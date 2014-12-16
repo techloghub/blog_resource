@@ -39,15 +39,15 @@ var scrollFunc=function(e)
 	e=e || window.event;
 	if(e.wheelDelta)
 	{
-		if(e.wheelDelta==120)
-		{
-			//向下滚动事件
-			$('#navbar').hide();
-		}
-		else
+		if(e.wheelDelta > 0)
 		{
 			//向上滚动事件
 			$('#navbar').show();
+		}
+		else
+		{
+			//向下滚动事件
+			$('#navbar').hide();
 		}
 	}
 	else if(e.detail)
