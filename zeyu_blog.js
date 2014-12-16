@@ -41,20 +41,12 @@ var scrollFunc=function(e)
 	{
 		if(e.wheelDelta > 0)
 		{
-<<<<<<< HEAD
 			//向上滚动事件
-=======
-			//向下滚动事件
->>>>>>> 544486bdc243b51240034759720f1d1393b2d4ce
 			$('#navbar').show();
 		}
 		else
 		{
-<<<<<<< HEAD
 			//向下滚动事件
-=======
-			//向上滚动事件
->>>>>>> 544486bdc243b51240034759720f1d1393b2d4ce
 			$('#navbar').hide();
 		}
 	}
@@ -63,7 +55,7 @@ var scrollFunc=function(e)
 		//Firefox
 		if(e.detail < 0)
 		{
-			//向上滚动事件<br>
+			//向上滚动事件
 			$('#navbar').show();
 			if (!$('#stuck_div').hasClass('col-md-3'))
 			{
@@ -73,7 +65,7 @@ var scrollFunc=function(e)
 		}
 		else
 		{
-			//向下滚动事件<br>
+			//向下滚动事件
 			$('#navbar').hide();
 			if (!$('#stuck_div').hasClass('col-md-3'))
 			{
