@@ -82,3 +82,29 @@ if(document.addEventListener)
 }
 
 window.onmousewheel=document.onmousewheel=scrollFunc;
+
+function login()
+{
+	var params = {
+		username : $('#username').val(),
+		password : $('#password').val(),
+		action : 'login'
+	};
+	$.ajax(
+		{
+			'url' : '/html/msgchache.php',
+			'type' : 'post',
+			'data' : params,
+			'dataType' : 'json',
+			'error' : function (jqXHR, textStatus, errorThrown) {
+				var errMsg = errorThrown == 'Forbidden' ? '没权限呢!' : '亲，服务器忙呢!';
+				jAlert(errMsg, '提示');
+			},
+			'success' : function (data) {
+				jAlert(data['msg']);
+				if (data['code'] == 0)
+					location.reload();
+			}
+		}
+	);
+}
