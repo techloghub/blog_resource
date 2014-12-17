@@ -20,6 +20,14 @@ if (typeof(CODE_DIVS) != 'undefined')
 	}
 }
 
+if (document.body.clientWidth < 976
+		|| navigator.userAgent.match(/Android/i
+		|| (navigator.userAgent.indexOf('iPhone') != -1) || (navigator.userAgent.indexOf('iPod') != -1) || (navigator.userAgent.indexOf('iPad') != -1))
+   )
+{
+	$('#stuck_div').hide();
+}
+
 jQuery
 (
  	function($)
@@ -43,11 +51,21 @@ var scrollFunc=function(e)
 		{
 			//向上滚动事件
 			$('#navbar').show();
+			if (!$('#stuck_div').hasClass('col-md-3'))
+			{
+				$('#stuck_div').css('margin', '50px 0 0 15px');
+				$('#stuck_div div:first ul:first').css('margin-top', '30px');
+			}
 		}
 		else
 		{
 			//向下滚动事件
 			$('#navbar').hide();
+			if (!$('#stuck_div').hasClass('col-md-3'))
+			{
+				$('#stuck_div').css('margin', '0px 0 0 15px');
+				$('#stuck_div div:first ul:first').css('margin-top', '0px');
+			}
 		}
 	}
 	else if(e.detail)
@@ -98,7 +116,7 @@ function login()
 			'dataType' : 'json',
 			'error' : function (jqXHR, textStatus, errorThrown) {
 				var errMsg = errorThrown == 'Forbidden' ? '没权限呢!' : '亲，服务器忙呢!';
-				jAlert(errMsg, '提示');
+				jAlert(errorThrown, '提示');
 			},
 			'success' : function (data) {
 				jAlert(data['msg']);
