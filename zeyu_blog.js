@@ -41,12 +41,12 @@ var scrollFunc=function(e)
 	{
 		if(e.wheelDelta > 0)
 		{
-			//向下滚动事件
+			//向上滚动事件
 			$('#navbar').show();
 		}
 		else
 		{
-			//向上滚动事件
+			//向下滚动事件
 			$('#navbar').hide();
 		}
 	}
@@ -55,7 +55,7 @@ var scrollFunc=function(e)
 		//Firefox
 		if(e.detail < 0)
 		{
-			//向上滚动事件<br>
+			//向上滚动事件
 			$('#navbar').show();
 			if (!$('#stuck_div').hasClass('col-md-3'))
 			{
@@ -65,7 +65,7 @@ var scrollFunc=function(e)
 		}
 		else
 		{
-			//向下滚动事件<br>
+			//向下滚动事件
 			$('#navbar').hide();
 			if (!$('#stuck_div').hasClass('col-md-3'))
 			{
