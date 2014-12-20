@@ -119,9 +119,14 @@ function login()
 				jAlert(errorThrown, '提示');
 			},
 			'success' : function (data) {
-				jAlert(data['msg']);
-				if (data['code'] == 0)
-					location.reload();
+				jAlert(data['msg'], '提示', function()
+					{
+						if (data['code'] == 0)
+							location.reload();
+						else
+							$('.close').click();
+					}
+				);
 			}
 		}
 	);
