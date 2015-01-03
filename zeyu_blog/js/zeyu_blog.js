@@ -110,7 +110,7 @@ function login()
 	};
 	$.ajax(
 		{
-			'url' : '/html/msgchache.php',
+			'url' : '/html/msgcheck.php',
 			'type' : 'post',
 			'data' : params,
 			'dataType' : 'json',
