@@ -893,17 +893,17 @@ var EditSession = function(text, mode) {
         config.loadModule(["mode", path], function(m) {
             if (this.$modeId !== path)
                 return cb && cb();
-            if (this.$modes[path] && !options)
-                return this.$onChangeMode(this.$modes[path]);
-            if (m && m.Mode) {
+            if (this.$modes[path] && !options) {
+                this.$onChangeMode(this.$modes[path]);
+            } else if (m && m.Mode) {
                 m = new m.Mode(options);
                 if (!options) {
                     this.$modes[path] = m;
                     m.$id = path;
                 }
                 this.$onChangeMode(m);
-                cb && cb();
             }
+            cb && cb();
         }.bind(this));
 
         // set mode to text until loading is finished
@@ -969,10 +969,7 @@ var EditSession = function(text, mode) {
         try {
             this.$worker = this.$mode.createWorker(this);
         } catch (e) {
-            if (typeof console == "object") {
-                console.log("Could not load worker");
-                console.log(e);
-            }    
+            config.warn("Could not load worker", e);
             this.$worker = null;
         }
     };
