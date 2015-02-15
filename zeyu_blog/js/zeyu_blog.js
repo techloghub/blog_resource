@@ -28,20 +28,6 @@ if (document.body.clientWidth < 976
 	$('#stuck_div').hide();
 }
 
-jQuery
-(
- 	function($)
-	{
-		$(document).ready
-		(
-		 	function()
-			{
-				$('.navbar-wrapper').stickUp();
-			}
-		);
-	}
-);
-
 var scrollFunc=function(e)
 {
 	e=e || window.event;
