@@ -1,3 +1,14 @@
+$(document).ready(function()
+	{
+		var chose_btn = document.getElementById('chose_btn');
+		var oLeft = chose_btn.offsetLeft;
+		var oTop = chose_btn.offsetTop;
+
+		$('#search_ul').css('left', oLeft);
+		$('#search_ul').css('top', oTop + chose_btn.offsetHeight);
+	}
+);
+
 function js_label(label_id)
 {
 	var item = $('#icon_'+label_id);
@@ -15,7 +26,8 @@ function js_label(label_id)
 
 function set_opt_type(opt_type)
 {
-	$("#chose_btn").html($('#'+opt_type).html() + ' <span class="caret"></span>');
+	$("#chose_btn").html(
+		$('#'+opt_type).html() + ' <span class="caret"></span>');
 	$("#chose_btn").val($('#'+opt_type).attr("id"));
 }
 

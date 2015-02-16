@@ -20,15 +20,7 @@ if (typeof(CODE_DIVS) != 'undefined')
 	}
 }
 
-if (document.body.clientWidth < 976
-		|| navigator.userAgent.match(/Android/i
-		|| (navigator.userAgent.indexOf('iPhone') != -1) || (navigator.userAgent.indexOf('iPod') != -1) || (navigator.userAgent.indexOf('iPad') != -1))
-   )
-{
-	$('#stuck_div').hide();
-}
-
-var scrollFunc=function(e)
+var scrollFunc = function(e)
 {
 	e=e || window.event;
 	if(e.wheelDelta)
@@ -82,10 +74,10 @@ var scrollFunc=function(e)
 
 if(document.addEventListener)
 {
-	document.addEventListener("DOMMouseScroll" ,scrollFunc, false);
+	document.addEventListener("DOMMouseScroll", scrollFunc, false);
 }
 
-window.onmousewheel=document.onmousewheel=scrollFunc;
+window.onmousewheel=document.onmousewheel = scrollFunc;
 
 function login()
 {
