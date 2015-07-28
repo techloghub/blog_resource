@@ -76,7 +76,9 @@ var canvas_options =
 	//Boolean - Whether to animate scaling the chart from the centre
 	animateScale : false,
 	//Function - This will fire when the animation of the chart is complete.
-	onAnimationComplete : null
+	onAnimationComplete : null,
+	legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+	datasetFill : true,
 }
 
 //var options = {

@@ -31,11 +31,11 @@ function set_opt_type(opt_type)
 	$("#chose_btn").val($('#'+opt_type).attr("id"));
 }
 
-function js_commit()
+function js_commit(action)
 {
 	var form = document.createElement("form");
 	form.setAttribute("method", 'post');
-	form.setAttribute("action", 'debin.php');
+	form.setAttribute("action", action);
 
 	hiddenField = document.createElement("input");
 	hiddenField.setAttribute("type", "hidden");
