@@ -1,2 +1,4 @@
 images/
 smarty/compile/
+node_modules/
+node_modules/*
