@@ -81,3 +81,9 @@
 	position:relative;
 	_overflow:hidden
 }
+li.article_li {
+	color : rgb(204, 51, 51);
+}
+.blog_content img {
+	max-width:765px;
+}
