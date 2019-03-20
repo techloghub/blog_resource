@@ -138,7 +138,6 @@ function submitcomment()
 			}
 		}
 	);
-	console.log(params);
 }
 
 function isEmail(email) {

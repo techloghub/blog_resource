@@ -87,3 +87,10 @@ li.article_li {
 .blog_content img {
 	max-width:765px;
 }
+blockquote.article_block {
+	border-left: 5px solid #eee;
+	margin: 0 0 20px;
+	padding: 10px 20px;
+	background-color: #e5e5e5;
+	color: #0047dd;
+}
