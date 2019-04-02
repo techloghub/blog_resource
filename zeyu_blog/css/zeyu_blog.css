@@ -99,4 +99,6 @@ blockquote.article_block {
     font-size: 20px;
     font-weight: bolder;
 	margin: 20px 1em 15px;
+    display:list-item;
+    list-style-type: disc;
 }
