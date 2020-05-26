@@ -82,7 +82,9 @@
 	_overflow:hidden
 }
 li.article_li {
-	color : rgb(204, 51, 51);
+	color : rgb(36, 67, 218);
+    word-wrap:break-word;
+    word-break:normal;
 }
 .blog_content img {
 	max-width:765px;
@@ -96,7 +98,7 @@ blockquote.article_block {
 }
 .techlog_third_title {
     color: #0047c1;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bolder;
 	margin: 20px 1em 15px;
     display:list-item;
